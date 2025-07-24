@@ -34,6 +34,7 @@ import {
 } from 'searchkit';
 import get from 'lodash/get';
 import truncate from 'lodash/truncate';
+import DOMPurify from 'dompurify';
 
 import DateRangeFilter from './search/DateRangeFilter';
 import MenuFilterCustomAll from './search/MenuFilterCustomAll';
@@ -239,9 +240,9 @@ const BaseHit = ({ bemBlocks, imageType, onLinkClick, title, url, renderBody, re
     <ImageType type={imageType} className={bemBlocks.item('imgtype')} />
     <div className={bemBlocks.item('title')}>
       {url ? (
-        <Link onClick={onLinkClick} to={url} dangerouslySetInnerHTML={{ __html: title }} />
+        <Link onClick={onLinkClick} to={url} dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(title) }} />
       ) : (
-        <div dangerouslySetInnerHTML={{ __html: title }} />
+        <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(title) }} />
       )}
     </div>
     {renderBody && <div className={bemBlocks.item('content')}>{renderBody()}</div>}
@@ -269,7 +270,7 @@ const PostHit = ({ bemBlocks, collapseSearch, locale, result }) => {
       published={published}
       renderBody={() => (
         <React.Fragment>
-          <div dangerouslySetInnerHTML={{ __html: body }} />
+          <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(body) }} />
           <div>
             <div title={I18n.t('search.like')} className="emoticon LikeSentimentOfPost" />
             <div className="emoticonValue">{source.sentiment_counts.like}</div>
@@ -316,7 +317,7 @@ const DumbExtractHit = ({ bemBlocks, collapseSearch, isHarvesting, locale, toggl
       title={subject}
       url={extractUrl}
       onLinkClick={onLinkClick}
-      renderBody={() => <div dangerouslySetInnerHTML={{ __html: body }} />}
+      renderBody={() => <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(body) }} />}
       renderFooter={() => (
         <PublishedInfo
           date={source.creation_date}
@@ -356,9 +357,9 @@ const SynthesisHit = ({ bemBlocks, collapseSearch, locale, result }) => {
       onLinkClick={collapseSearch}
       renderBody={() => (
         <React.Fragment>
-          <div style={{ backgroundColor: '#f4f4f4' }} dangerouslySetInnerHTML={{ __html: introduction }} />
-          {ideas ? <p style={{ paddingLeft: '1em', marginTop: '1em' }} dangerouslySetInnerHTML={{ __html: ideas }} /> : null}
-          <div style={{ backgroundColor: '#f4f4f4', marginTop: '1em' }} dangerouslySetInnerHTML={{ __html: conclusion }} />
+          <div style={{ backgroundColor: '#f4f4f4' }} dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(introduction) }} />
+          {ideas ? <p style={{ paddingLeft: '1em', marginTop: '1em' }} dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(ideas) }} /> : null}
+          <div style={{ backgroundColor: '#f4f4f4', marginTop: '1em' }} dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(conclusion) }} />
         </React.Fragment>
       )}
       renderFooter={() => (
@@ -415,10 +416,10 @@ const IdeaHit = ({ bemBlocks, collapseSearch, locale, result }) => {
       onLinkClick={collapseSearch}
       renderBody={() => (
         <React.Fragment>
-          {description ? <div dangerouslySetInnerHTML={{ __html: description }} /> : null}
+          {description ? <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(description) }} /> : null}
           {highlightedLS(result, 'synthesis_title', locale) ? (
             <div>
-              <div dangerouslySetInnerHTML={{ __html: synthesisTitle }} />
+              <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(synthesisTitle) }} />
               <p>
                 <Translate value="search.search_come_from_what_you_need_to_know" />
               </p>
@@ -427,7 +428,7 @@ const IdeaHit = ({ bemBlocks, collapseSearch, locale, result }) => {
           {highlightedLS(result, 'announcement_title', locale) || highlightedLS(result, 'announcement_body', locale) ? (
             <div>
               {/* <div dangerouslySetInnerHTML={{ __html: announceTitle }} /> */}
-              <div dangerouslySetInnerHTML={{ __html: announceBody }} />
+              <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(announceBody) }} />
               <p>
                 <Translate value="search.search_come_from_announcement" />
               </p>

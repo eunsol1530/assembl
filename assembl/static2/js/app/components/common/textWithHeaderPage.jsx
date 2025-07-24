@@ -2,6 +2,7 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import Header from './header';
+import DOMPurify from 'dompurify';
 
 export type TextWithHeaderPageProps = {
   headerTitle: string,
@@ -18,7 +19,7 @@ class DumbTextWithHeaderPage extends React.Component<TextWithHeaderPageProps, St
       <div
         className="ellipsis-content justify"
         dangerouslySetInnerHTML={{
-          __html: text
+          __html: DOMPurify.sanitize(text)
         }}
       />
     )
