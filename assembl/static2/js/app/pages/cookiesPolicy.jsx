@@ -4,6 +4,7 @@ import { compose, graphql } from 'react-apollo';
 import type { OperationComponent, QueryProps } from 'react-apollo';
 import { connect } from 'react-redux';
 import { I18n, Translate } from 'react-redux-i18n';
+import DOMPurify from 'dompurify'; // Import DOMPurify
 
 import TextWithHeaderPage from '../components/common/textWithHeaderPage';
 import { richTextBodyIsEmpty } from '../utils/draftjs';
@@ -31,7 +32,7 @@ const CookiesPolicy = ({ text, headerTitle, debateData }) => (
           <div
             className="ellipsis-content justify"
             dangerouslySetInnerHTML={{
-              __html: text
+              __html: DOMPurify.sanitize(text) // Sanitize the HTML content
             }}
           />
         </Fragment>

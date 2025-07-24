@@ -3,6 +3,7 @@
 import * as React from 'react';
 import { Translate } from 'react-redux-i18n';
 import { Link } from 'react-router';
+import DOMPurify from 'dompurify'; // Import DOMPurify for sanitization
 
 import StatisticsDoughnut from '../debate/common/statisticsDoughnut';
 import PostsAndContributorsCount from '../common/postsAndContributorsCount';
@@ -12,7 +13,7 @@ import type { SynthesisIdea } from './types.flow';
 
 const SynthesisBody = ({ level, hasSiblings, value, stats }) => (
   <div className="synthesis-body" style={{ columnCount: !hasSiblings && level > 2 ? 2 : 'auto' }}>
-    <p dangerouslySetInnerHTML={{ __html: value }} />
+    <p dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(value) }} /> {/* Sanitize HTML content */}
     {stats}
   </div>
 );

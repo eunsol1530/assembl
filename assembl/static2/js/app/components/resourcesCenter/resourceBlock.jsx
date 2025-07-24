@@ -3,6 +3,7 @@ import * as React from 'react';
 import classnames from 'classnames';
 import { Grid } from 'react-bootstrap';
 import { Translate } from 'react-redux-i18n';
+import DOMPurify from 'dompurify'; // Import DOMPurify
 
 import Medias from '../common/medias';
 
@@ -50,7 +51,7 @@ const ResourceBlock = (props: Props) => {
               </div>
             )}
           <div className="resource-text">
-            <p dangerouslySetInnerHTML={{ __html: text }} />
+            <p dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(text) }} /> {/* Sanitize text */}
             {doc && (
               <div className="resource-download-link">
                 <a href={doc.externalUrl}>

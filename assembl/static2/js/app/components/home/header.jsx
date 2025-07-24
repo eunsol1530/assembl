@@ -4,6 +4,7 @@ import { Translate, I18n } from 'react-redux-i18n';
 import { compose, graphql } from 'react-apollo';
 import { connect } from 'react-redux';
 import { Grid, Row } from 'react-bootstrap';
+import DOMPurify from 'dompurify'; // Import DOMPurify
 
 import Statistic from './header/statistic';
 import ParticipateButton from '../common/participateButton';
@@ -40,7 +41,7 @@ const Header = ({ timeline, title, subtitle, headerImage, logoImage, buttonLabel
           <div className="max-text-width">
             {title ? <h1 className="light-title-1">{title}</h1> : null}
             <h4 className="light-title-4 uppercase margin-m">
-              {subtitle ? <span dangerouslySetInnerHTML={{ __html: subtitle }} /> : null}
+              {subtitle ? <span dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(subtitle) }} /> : null} {/* Sanitize subtitle */}
               {startDate && endDate ? (
                 <div>
                   <Translate
