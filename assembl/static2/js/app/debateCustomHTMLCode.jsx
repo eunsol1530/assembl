@@ -1,5 +1,6 @@
 // @flow
 import * as React from 'react';
+import DOMPurify from 'dompurify';
 
 type Props = {
   currentRoute: string,
@@ -31,7 +32,8 @@ const DebateCustomHTMLCode = ({ currentRoute, debateData }: Props) => {
     }
 
     if (customHtml) {
-      return <div className="debate-custom-html-code" dangerouslySetInnerHTML={{ __html: customHtml }} />;
+      const sanitizedHtml = DOMPurify.sanitize(customHtml);
+      return <div className="debate-custom-html-code" dangerouslySetInnerHTML={{ __html: sanitizedHtml }} />;
     }
   }
   return <div className="debate-custom-html-code" />;

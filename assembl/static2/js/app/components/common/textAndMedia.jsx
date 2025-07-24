@@ -5,6 +5,7 @@ import classnames from 'classnames';
 import type { AnnouncementContent } from '../debate/common/announcement';
 import { renderRichtext } from '../../utils/linkify';
 import { richTextBodyIsEmpty } from '../../utils/draftjs';
+import DOMPurify from 'dompurify'; // Import DOMPurify
 
 type DescriptionProps = {
   content: string
@@ -19,7 +20,7 @@ const Quote = ({ content }: DescriptionProps) => (
     <div className="media-description-icon">
       <span className="assembl-icon-pepite color2">&nbsp;</span>
     </div>
-    <div className="description-txt" dangerouslySetInnerHTML={{ __html: content }} />
+    <div className="description-txt" dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(content) }} /> {/* Sanitize content */}
     <div className="box-hyphen left">&nbsp;</div>
   </div>
 );

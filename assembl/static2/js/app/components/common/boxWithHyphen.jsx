@@ -2,6 +2,7 @@
 import classnames from 'classnames';
 import * as React from 'react';
 import { Localize } from 'react-redux-i18n';
+import DOMPurify from 'dompurify'; // Import DOMPurify for sanitization
 
 type BoxProps = {
   body: string,
@@ -32,7 +33,7 @@ const Box = ({ body, date, hyphenStyle, subject, title }: BoxProps) => (
     </div>
     <div className="date">{date ? <Localize value={date} dateFormat="date.format2" /> : null}</div>
     <div className="insert-content margin-s">
-      <p dangerouslySetInnerHTML={{ __html: body }} />
+      <p dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(body) }} /> {/* Sanitize the body content */}
     </div>
   </div>
 );
